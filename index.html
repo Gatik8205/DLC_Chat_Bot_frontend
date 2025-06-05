@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLC Chatbot - Learn Digital Tools</title>
+    <meta name="description" content="Ask anything about WhatsApp, Paytm, or Google Maps. A chatbot to help with digital literacy using FAQs and step-by-step guides.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="chatbot-container">
+        <header class="chatbot-header">🤖DLC CHAT BOT
+             <button id="toggle-dark" title="Toggle Dark Mode">🌓</button>
+        </header>
+        <div class="chatbot-messages" id="chat-messages">
+            <!-- ChatBot Messages Will Appear Here -->
+        </div>
+        <div class="quick-options">
+            <button class="quick-option">How To Make UPI Payments</button>
+            <button class="quick-option">How To Share Live Location on Maps</button>
+            <button class="quick-option">How To Send Photos on WhatsApp</button>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="user-input" placeholder="Ask Me Anything">
+            <button type="button" onclick="sendMessage()" id="send-btn">
+                <i class="fas fa-paper-plane" id="plane-icon"></i>
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
