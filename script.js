@@ -33,7 +33,7 @@ function sendMessage() {
   document.getElementById("chat-messages").scrollTop = document.getElementById("chat-messages").scrollHeight;
 
   // Send request to backend (if using AI API)
-  fetch("http://localhost:5000/chat", {
+  fetch("https://dlc-chat-bot-backend.onrender.com/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
