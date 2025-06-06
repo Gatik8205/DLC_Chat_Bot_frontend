@@ -1,3 +1,5 @@
+let isBotResponding = false;
+
 // Append message to chat
 function appendMessage(sender, text) {
   const messageDiv = document.createElement("div");
@@ -11,18 +13,24 @@ function appendMessage(sender, text) {
 function sendMessage() {
   const input = document.getElementById("user-input");
   const userMessage = input.value.trim();
-  if (userMessage === "") return;
 
-  console.log("User message:",userMessage);
-  
+  if (userMessage === "") {
+    appendMessage("bot", "❗ Please enter a message before sending.");
+    return;
+  }
+
+  if (isBotResponding) {
+    appendMessage("bot", "⏳ Please wait for the current response to finish.");
+    return;
+  }
+
   appendMessage("user", userMessage);
+  input.value = "";
 
   // Animate paper plane icon
   const icon = document.getElementById("plane-icon");
   icon.classList.add("send-animation");
   setTimeout(() => icon.classList.remove("send-animation"), 600);
-
-  input.value = "";
 
   // Show typing indicator
   const typingDiv = document.createElement("div");
@@ -32,24 +40,31 @@ function sendMessage() {
   document.getElementById("chat-messages").appendChild(typingDiv);
   document.getElementById("chat-messages").scrollTop = document.getElementById("chat-messages").scrollHeight;
 
-  // Send request to backend (if using AI API)
+  isBotResponding = true;
+
+  // Send request to backend
   fetch("https://dlc-chat-bot-backend.onrender.com/chat", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: 
-      userMessage })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: userMessage })
   })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
       typingDiv.remove();
-      appendMessage("bot", data.reply);
+      appendMessage("bot", data.reply || "🤔 Sorry, I didn't get a reply.");
     })
     .catch(error => {
       typingDiv.remove();
-      appendMessage("bot", "❌ Failed to get response. Try again.");
-      console.error(error);
+      appendMessage("bot", "❌ Failed to get a response. Please check your internet or try again later.");
+      console.error("Fetch error:", error);
+    })
+    .finally(() => {
+      isBotResponding = false;
     });
 }
 
@@ -63,7 +78,7 @@ document.querySelectorAll(".quick-option").forEach(button => {
 
 // Welcome message on load
 window.addEventListener("DOMContentLoaded", () => {
-  appendMessage("bot", "👋 Hi! I'm your DLC Chatbot. Ask me anything about WhatsApp, Paytm,Google Maps or any questions you have.");
+  appendMessage("bot", "👋 Hi! I'm your DLC Chatbot. Ask me anything about WhatsApp, Paytm, Google Maps or general digital help!");
 
   // Load dark mode preference
   const savedTheme = localStorage.getItem("theme");
@@ -80,7 +95,5 @@ const container = document.querySelector(".chatbot-container");
 toggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("dark");
   container.classList.toggle("dark");
-
-  const mode = document.body.classList.contains("dark") ? "dark" : "light";
-  localStorage.setItem("theme", mode);
+  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
 });
