@@ -97,3 +97,11 @@ toggleBtn.addEventListener("click", () => {
   container.classList.toggle("dark");
   localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
 });
+
+// Send message on Enter key press
+document.getElementById("user-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+});
