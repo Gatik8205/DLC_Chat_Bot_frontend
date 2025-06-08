@@ -4,7 +4,11 @@ let isBotResponding = false;
 function appendMessage(sender, text) {
   const messageDiv = document.createElement("div");
   messageDiv.className = sender === "user" ? "user-message" : "bot-message";
-  messageDiv.textContent = text;
+    if (sender === "bot") {
+    messageDiv.innerHTML = text;
+  } else {
+    messageDiv.textContent = text;
+  }
   document.getElementById("chat-messages").appendChild(messageDiv);
   document.getElementById("chat-messages").scrollTop = document.getElementById("chat-messages").scrollHeight;
 }
