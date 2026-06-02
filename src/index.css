@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark,.dark *));
+
+.bot-card { font-size: 14px; line-height: 1.6; }
+.bot-card h3 { font-size: 15px; font-weight: 600; color: #2563eb; margin-bottom: 8px; }
+.bot-card p { margin-bottom: 8px; }
+.bot-card ol { padding-left: 18px; margin-bottom: 8px; }
+.bot-card ol li { margin-bottom: 4px; }
+.bot-card u { text-decoration: underline; }
